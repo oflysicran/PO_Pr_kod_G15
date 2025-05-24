@@ -16,3 +16,14 @@ private void przyjazd(int turaId){
   int liczbaPacjentow = 1 + los.nextInt(xxx);
   for (int i = 1; i < liczbaPacjentow; i++){
     int id = ;// nie znam metody
+    List<Objawy> objawy = Objawy.generujLosowe();
+    StanPacjenta stan = Objawy.przypiszStan(objawy);
+
+    /*if (stan == StanPacjenta.Czerwony){
+    }*/
+  }
+  public List<Pacjent> nowiPacjenci(){
+    List<Pacjent> nowi = new ArrayList<>(pacjenci);
+    pacjenci.clear();
+    return nowi;
+}
