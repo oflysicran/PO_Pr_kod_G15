@@ -1,6 +1,6 @@
 package po_pr_kod_g15;
 
-public class Budżet {
+public class Budzet {
   private double sumaStartowa;
   private double aktualnyBudzet;
 
