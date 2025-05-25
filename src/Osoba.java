@@ -20,7 +20,7 @@ public abstract class Osoba {
 
         int newId;
         do {
-            newId = 1 + random.nextInt(9999); // liczba z zakresu 1–9999
+            newId = 1 + random.nextInt(9999); // liczba z zakresu 0001–9999
         } while (usedIds.contains(newId));
 
         usedIds.add(newId);
