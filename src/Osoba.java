@@ -12,18 +12,21 @@ public abstract class Osoba {
     public final String nazwisko;
     
     private static final String[] IMIONA = {
-    "Anna", "Jan", "Maria", "Piotr", "Katarzyna", "Tomasz", "Agnieszka", "Paweł",
-    "Monika", "Michał", "Zofia", "Andrzej", "Aleksandra", "Krzysztof", "Barbara", "Marek",
-    "Elżbieta", "Wojciech", "Natalia", "Grzegorz", "Joanna", "Łukasz", "Małgorzata", "Adam",
-    "Weronika", "Damian", "Julia", "Szymon", "Helena", "Mateusz"
-};
+        "Anna", "Jan", "Maria", "Piotr", "Katarzyna", "Tomasz", "Agnieszka", "Paweł",
+        "Monika", "Michał", "Zofia", "Andrzej", "Aleksandra", "Krzysztof", "Barbara", "Marek",
+        "Elżbieta", "Wojciech", "Natalia", "Grzegorz", "Joanna", "Łukasz", "Małgorzata", "Adam",
+        "Weronika", "Damian", "Julia", "Szymon", "Helena", "Mateusz", "Emilia", "Rafał",
+        "Karolina", "Marcin", "Ewa", "Sebastian", "Magdalena", "Jakub", "Dorota", "Patryk",
+        "Iwona", "Dariusz", "Izabela", "Daniel", "Beata", "Oliwia", "Konrad", "Renata", "Jacek", "Justyna"
+    };
     
     private static final String[] NAZWISKA = {
-    "Rower", "Mostek", "Lipiec", "Wicher", "Pokój", "Zegar", "Burza", "Topór",
-    "Lód", "Klon", "Ptak", "Koral", "Wazon", "Świt", "Róg", "Brzeg",
-    "Cień", "Głos", "Nurt", "Rytm", "Szczyt", "Szlak", "Lot", "Szum",
-    "Kadr", "Mur", "Wąwóz", "Pień", "Szkło"
-};
+        "Rower", "Pokój", "Mur", "Kwiat", "Kamień", "Topór", "Zegar", "Łyżka", "Wąż", "Dym",
+        "Cień", "Lot", "Klon", "Trawa", "Deszcz", "Wilk", "Lis", "Jeż", "Kruk", "Miód",
+        "Kos", "Grom", "Głos", "Wicher", "Szept", "Nurt", "Szum", "Mróz", "Wazon", "Dzwon",
+        "Ogień", "Pień", "Smok", "Szlak", "Koral", "Rytm", "Szczyt", "Pajęk", "Żuraw", "Szkło",
+        "Brzeg", "Żar", "Obłok", "Świt", "Gaj", "Strumyk", "Błysk", "Kieł", "Bąk", "Skok"
+    };
     
 
     public Osoba() {
