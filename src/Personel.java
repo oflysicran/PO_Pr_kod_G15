@@ -1,13 +1,25 @@
 package po_pr_kod_g15;
 
 public class Personel extends Osoba {
+
     protected enum rola{
-        Lekarz, Pielegniarka;
+        LEKARZ, PIELĘGNIARKA;
     }
     boolean dostepnosc;
+    protected rola rolaPersonelu;
     
-    public Personel() {
-        super();
+    public Personel(int id, String imie, String nazwisko, rola rolaPersonelu, boolean dostepnosc) {
+        super(id, imie, nazwisko, TypOsoby.PERSONEL);
+        this.rolaPersonelu = rolaPersonelu;
+        this.dostepnosc = dostepnosc;
+    }
+    
+    public void lecz(Pacjent pacjent) {
+        if (dostepnosc) {
+            System.out.println(rolaPersonelu + " leczy pacjenta o ID " + pacjent.id + " (stan: " + pacjent.stan + ")");
+        } else {
+            System.out.println(rolaPersonelu + " nie jest dostępny do leczenia.");
+        }
     }
 
     @Override
@@ -15,5 +27,8 @@ public class Personel extends Osoba {
         return "Personel - ID: " + sformatowaneId() + " - " + imie + " " + nazwisko;
     }
 }
+
+
+
 
 
