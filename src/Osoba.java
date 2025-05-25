@@ -6,10 +6,15 @@ import java.util.Random;
 public abstract class Osoba {
     static final Set<Integer> usedIds = new HashSet<>();
     static final Random random = new Random();
-
-    public final int id;
-    public final String imie;
-    public final String nazwisko;
+    
+    protected enum TypOsoby {
+        PERSONEL, PACJENT;
+    }
+    
+    protected final int id;
+    protected final String imie;
+    protected final String nazwisko;
+    protected TypOsoby typ;
     
     private static final String[] IMIONA = {
         "Anna", "Jan", "Maria", "Piotr", "Katarzyna", "Tomasz", "Agnieszka", "Paweł",
@@ -29,10 +34,11 @@ public abstract class Osoba {
     };
     
 
-    public Osoba() {
+    public Osoba(int id, String imie, String nazwisko, TypOsoby typ) {
         this.id = generateUniqueId();
         this.imie = IMIONA[random.nextInt(IMIONA.length)];
         this.nazwisko = NAZWISKA[random.nextInt(NAZWISKA.length)];
+        this.typ = dodajRole(typ);
     }
 
     private int generateUniqueId() {
@@ -42,7 +48,7 @@ public abstract class Osoba {
 
         int newId;
         do {
-            newId = 1 + random.nextInt(9999); // 0001–9999 jako 1–9999
+            newId = 1 + random.nextInt(9999); // 0001–9999
         } while (usedIds.contains(newId));
 
         usedIds.add(newId);
@@ -52,4 +58,9 @@ public abstract class Osoba {
     protected String sformatowaneId() {
         return String.format("%04d", id);
     }
+
+    public static TypOsoby dodajRole(TypOsoby typ){
+        return typ;
+    }
 }
+
