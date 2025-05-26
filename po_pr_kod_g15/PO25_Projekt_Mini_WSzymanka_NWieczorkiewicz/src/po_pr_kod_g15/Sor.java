@@ -5,22 +5,40 @@ import java.util.*;
 public class Sor {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Podaj liczbę tur: ");
-        int liczbaTur = scanner.nextInt();
-        scanner.nextLine();
 
-        Budzet budzet = new Budzet(10000);
+        // Ustawienia początkowe budżetu i stawek
+        System.out.print("Podaj początkowy budżet: ");
+        double initialBudget = Double.parseDouble(scanner.nextLine());
+        System.out.print("Podaj dniówkę lekarza: ");
+        double dailyWageDoctor = Double.parseDouble(scanner.nextLine());
+        System.out.print("Podaj dniówkę pielęgniarki: ");
+        double dailyWageNurse = Double.parseDouble(scanner.nextLine());
+
+        Budzet budzet = new Budzet(initialBudget);
         Karetka karetka = new Karetka();
 
         // Generujemy początkowy personel
         List<Personel> personelList = generujPersonel(5);
         List<Pacjent> hospitalizowani = new ArrayList<>();
 
-        for (int tura = 1; tura <= liczbaTur; tura++) {
-            System.out.println("\n=== Tura " + tura + " ===");
+        int day = 1;
+        while (budzet.ileZostalo() > 0) {
+            System.out.println("\n=== Dzień " + day + " (Budżet: " + budzet.ileZostalo() + ") ===");
 
-            // 1) Przyjazd karetek lub samodzielna wizyta
-            karetka.nowaTura(tura);
+            // 0) Automatyczna wypłata dniówek personelu
+            int countDoctors = (int) personelList.stream()
+                .filter(p -> p.rolaPersonelu == Personel.Rola.LEKARZ).count();
+            int countNurses = (int) personelList.stream()
+                .filter(p -> p.rolaPersonelu == Personel.Rola.PIELĘGNIARKA).count();
+            double costWages = countDoctors * dailyWageDoctor + countNurses * dailyWageNurse;
+            if (costWages > budzet.ileZostalo()) {
+                System.out.println("Brak środków na wypłatę dniówek: koszt " + costWages + ", zostało " + budzet.ileZostalo());
+                break;
+            }
+            budzet.dodaj(-costWages);
+
+            // 1) Przyjazd karetek i koszt
+            karetka.nowaTura(day);
             List<Pacjent> nowiPacjenci = karetka.nowiPacjenci();
             if (!nowiPacjenci.isEmpty()) {
                 hospitalizowani.addAll(nowiPacjenci);
@@ -28,50 +46,55 @@ public class Sor {
                 nowiPacjenci.forEach(p ->
                     System.out.println(" - " + p.sformatowaneId() + " " + p.imie + " " + p.nazwisko)
                 );
+                double ambulanceCost = nowiPacjenci.size() * 300;
+                if (ambulanceCost > budzet.ileZostalo()) {
+                    System.out.println("Brak środków na opłacenie karetki (" + ambulanceCost + ")");
+                    break;
+                }
+                budzet.dodaj(-ambulanceCost);
             } else {
-                // Możliwość samodzielnego przyjścia - 20% szansy
-                
-                    System.out.println("Brak nowych pacjentów w tej turze.");
+                System.out.println("Brak nowych pacjentów w tej turze.");
             }
-            
 
-            // 2) Zmiany stanu pacjentów
-            List<Pacjent> doZwolnienia = new ArrayList<>();
-            List<Pacjent> zmarli = new ArrayList<>();
+            // 2) Zmiany stanu pacjentów i przychody
+            List<Pacjent> discharged = new ArrayList<>();
+            List<Pacjent> deceased = new ArrayList<>();
             Random rand = new Random();
             for (Pacjent p : new ArrayList<>(hospitalizowani)) {
-                int los = rand.nextInt(100);
-                if (los < 10) { // 10% na śmierć
-                    zmarli.add(p);
-                } else if (los < 30) { // 20% na wyleczenie
-                    doZwolnienia.add(p);
+                int roll = rand.nextInt(100);
+                if (roll < 10) {
+                    deceased.add(p);
+                } else if (roll < 30) {
+                    discharged.add(p);
                 }
             }
-            hospitalizowani.removeAll(zmarli);
-            hospitalizowani.removeAll(doZwolnienia);
+            hospitalizowani.removeAll(deceased);
+            hospitalizowani.removeAll(discharged);
 
-            // Wypis minimalnych informacji
-            if (!zmarli.isEmpty()) {
+            if (!deceased.isEmpty()) {
                 System.out.println("Pacjenci zmarli:");
-                zmarli.forEach(p -> System.out.println(" - " + p.imie + " " + p.nazwisko));
+                deceased.forEach(p -> System.out.println(" - " + p.imie + " " + p.nazwisko));
             }
-            if (!doZwolnienia.isEmpty()) {
+            if (!discharged.isEmpty()) {
                 System.out.println("Pacjenci wyleczeni:");
-                doZwolnienia.forEach(p -> System.out.println(" - " + p.imie + " " + p.nazwisko));
+                discharged.forEach(p -> System.out.println(" - " + p.imie + " " + p.nazwisko));
+                double revenuePerPatient = 2000;
+                budzet.nagrodaZaWyleczenie(discharged.size() * revenuePerPatient);
             }
+
             System.out.println("Obecnie w SOR: " + hospitalizowani.size());
 
             // 3) Interaktywne menu
-            boolean dalej = false;
-            while (!dalej) {
+            boolean cont = false;
+            while (!cont) {
                 System.out.println("\nWybierz opcję:");
                 System.out.println("1. Pokaż objawy konkretnego pacjenta");
                 System.out.println("2. Lista wszystkich pacjentów (ID, imię, nazwisko, stan)");
                 System.out.println("3. Podgląd personelu");
                 System.out.println("4. Kontynuuj");
                 System.out.print("> ");
-                String wybor = scanner.nextLine();
-                switch (wybor) {
+                String choice = scanner.nextLine();
+                switch (choice) {
                     case "1":
                         System.out.print("Podaj ID pacjenta: ");
                         String id = scanner.nextLine();
@@ -86,34 +109,29 @@ public class Sor {
                     case "2":
                         System.out.println("Lista pacjentów:");
                         hospitalizowani.forEach(p ->
-                            System.out.println(" - " 
-                                + p.sformatowaneId() + " " 
-                                + p.imie + " " 
-                                + p.nazwisko + " (" 
-                                + p.stan + ")")
+                            System.out.println(" - " + p.sformatowaneId() + " " + p.imie + " " + p.nazwisko + " (" + p.stan + ")")
                         );
                         break;
                     case "3":
-                        long lek = personelList.stream()
-                            .filter(p -> p.rolaPersonelu == Personel.Rola.LEKARZ).count();
-                        long lekD = personelList.stream()
-                            .filter(p -> p.rolaPersonelu == Personel.Rola.LEKARZ && p.dostepnosc).count();
-                        long piel = personelList.stream()
-                            .filter(p -> p.rolaPersonelu == Personel.Rola.PIELĘGNIARKA).count();
-                        long pielD = personelList.stream()
-                            .filter(p -> p.rolaPersonelu == Personel.Rola.PIELĘGNIARKA && p.dostepnosc).count();
-                        System.out.println("Personel: Lekarze " + lek + " (" + lekD + " dostępnych), " +
-                                           "Pielęgniarki " + piel + " (" + pielD + " dostępnych)");
+                        long docs = personelList.stream().filter(p -> p.rolaPersonelu == Personel.Rola.LEKARZ).count();
+                        long docsAvail = personelList.stream().filter(p -> p.rolaPersonelu == Personel.Rola.LEKARZ && p.dostepnosc).count();
+                        long nurses = personelList.stream().filter(p -> p.rolaPersonelu == Personel.Rola.PIELĘGNIARKA).count();
+                        long nursesAvail = personelList.stream().filter(p -> p.rolaPersonelu == Personel.Rola.PIELĘGNIARKA && p.dostepnosc).count();
+                        System.out.println("Personel: Lekarze " + docs + " (" + docsAvail + " dostępnych), " +
+                                           "Pielęgniarki " + nurses + " (" + nursesAvail + " dostępnych)");
                         break;
                     case "4":
-                        dalej = true;
+                        cont = true;
                         break;
                     default:
                         System.out.println("Nieprawidłowa opcja.");
                 }
             }
+
+            day++;
         }
-        System.out.println("\nSymulacja zakończona.");
+
+        System.out.println("\nSymulacja zakończona. Ostateczny budżet: " + budzet.ileZostalo());
     }
 
     private static List<Personel> generujPersonel(int liczba) {
@@ -121,9 +139,7 @@ public class Sor {
         for (int i = 0; i < liczba; i++) {
             String imie = Osoba.losujImie();
             String nazwisko = Osoba.losujNazwisko();
-            Personel.Rola rola = (i % 2 == 0)
-                ? Personel.Rola.LEKARZ
-                : Personel.Rola.PIELĘGNIARKA;
+            Personel.Rola rola = (i % 2 == 0) ? Personel.Rola.LEKARZ : Personel.Rola.PIELĘGNIARKA;
             boolean dostepnosc = Personel.losujDostepnosc();
             lista.add(new Personel(imie, nazwisko, rola, dostepnosc));
         }
