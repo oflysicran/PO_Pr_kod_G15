@@ -4,13 +4,13 @@ import java.util.Random;
 
 public class Personel extends Osoba {
 
-    public enum Rola {
+    protected enum Rola {
         LEKARZ,
         PIELĘGNIARKA
     }
 
-    boolean dostepnosc;
-    final Rola rolaPersonelu;
+    protected boolean dostepnosc;
+    protected final Rola rolaPersonelu;
 
 
     public Personel(String imie, String nazwisko, Rola rolaPersonelu, boolean dostepnosc) {
