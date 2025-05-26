@@ -1,45 +1,49 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-
-// Budzet.java
 package po_pr_kod_g15;
 
 public class Budzet {
-    private double sumaStartowa;
+    // rekomendowany maksymalny budżet startowy, aby liczba tur nie była zbyt duża
+    public static final double REKOMENDOWANY_MAX = 1_000_000.0;
+
+    private final double sumaStartowa;
     private double aktualnyBudzet;
 
+    /**
+     * @param sumaStartowa – początkowy budżet; zalecane <= REKOMENDOWANY_MAX
+     */
     public Budzet(double sumaStartowa) {
+        if (sumaStartowa > REKOMENDOWANY_MAX) {
+            System.out.println("Uwaga: zadeklarowany budżet przekracza rekomendowany poziom (" 
+                               + REKOMENDOWANY_MAX + "). Symulacja może trwać bardzo długo.");
+        }
         this.sumaStartowa = sumaStartowa;
         this.aktualnyBudzet = sumaStartowa;
     }
 
+    /**
+     * Odejmij kwotę z budżetu (np. dniówki personelu).
+     * @param kwota – dodatnia wartość zostanie odjęta z aktualnego budżetu.
+     */
     public void dodaj(double kwota) {
-        aktualnyBudzet += kwota;
+        this.aktualnyBudzet += kwota;
     }
 
-    public boolean odejmij(double kwota) {
-        if (kwota <= aktualnyBudzet) {
-            aktualnyBudzet -= kwota;
-            return true;
-        } else {
-            System.out.println("Brak wystarczaj\u0105cych \u015brodk\u00f3w w bud\u017cecie.");
-            return false;
-        }
+    /**
+     * Dodaj nagrodę za wyleczenie pacjenta
+     * @param przychodZaPacjenta – kwota, którą otrzymujesz za jednego wyleczonego
+     */
+    public void nagrodaZaWyleczenie(double przychodZaPacjenta) {
+        aktualnyBudzet += przychodZaPacjenta;
     }
 
-    public double getAktualnyBudzet() {
+    /**
+     * @return ile zostało środków w budżecie.
+     */
+    public double ileZostalo() {
         return aktualnyBudzet;
-    }
-
-    public double getSumaStartowa() {
-        return sumaStartowa;
     }
 
     @Override
     public String toString() {
-        return String.format("Bud\u017cet: %.2f / %.2f", aktualnyBudzet, sumaStartowa);
+        return String.format("Budżet: %.2f / %.2f", aktualnyBudzet, sumaStartowa);
     }
 }
