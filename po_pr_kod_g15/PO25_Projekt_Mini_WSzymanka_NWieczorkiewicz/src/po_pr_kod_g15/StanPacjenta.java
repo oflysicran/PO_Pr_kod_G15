@@ -1,4 +1,3 @@
-// StanPacjenta.java
 package po_pr_kod_g15;
 
 import java.util.ArrayList;
