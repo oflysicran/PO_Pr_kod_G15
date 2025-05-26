@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Pacjent extends Osoba {
-    protected StanPacjenta stan;
+    protected StanPacjenta.Stan stan;
     protected final List<Objawy> objawy;
 
     /**
@@ -14,7 +14,7 @@ public class Pacjent extends Osoba {
      * @param stan - stan pacjenta (enum StanPacjenta)
      * @param objawy - lista objawów (Objawy)
      */
-    public Pacjent(String imie, String nazwisko, StanPacjenta stan, List<Objawy> objawy) {
+    public Pacjent(String imie, String nazwisko, StanPacjenta.Stan stan, List<Objawy> objawy) {
         super(imie, nazwisko, TypOsoby.PACJENT);
         this.stan = stan;
         this.objawy = new ArrayList<>(objawy);
