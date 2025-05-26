@@ -42,7 +42,7 @@ public abstract class Osoba {
         this.id = generateUniqueId();
         this.imie = imie;
         this.nazwisko = nazwisko;
-        this.typ = typ;
+        this.typ = dodajRole(typ);
     }
 
     // Metoda generująca unikalne ID w zakresie 1-9999
@@ -71,4 +71,11 @@ public abstract class Osoba {
     public static String losujNazwisko() {
         return NAZWISKA[random.nextInt(NAZWISKA.length)];
     }
+    
+    public static TypOsoby dodajRole(TypOsoby typ){
+        return typ;
+    }
+    
+    @Override
+    public abstract String toString();
 }
