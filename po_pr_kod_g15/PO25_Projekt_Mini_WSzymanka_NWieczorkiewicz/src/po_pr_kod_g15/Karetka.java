@@ -27,8 +27,8 @@ public class Karetka {
         int liczbaPacjentow = 2 + los.nextInt(2); // 2–3 pacjentów
 
         for (int i = 0; i < liczbaPacjentow; i++) {
-            List<Objawy> objawy = StanPacjenta.generujLosowe();
-            StanPacjenta stan = StanPacjenta.przypiszStan(objawy);
+            List<Objawy> objawy = StanPacjenta.generujLosoweObjawy();
+            StanPacjenta.Stan stan = StanPacjenta.przypiszStan(objawy);
 
             // losowe imię i nazwisko pacjenta
             String imie = Osoba.losujImie();
