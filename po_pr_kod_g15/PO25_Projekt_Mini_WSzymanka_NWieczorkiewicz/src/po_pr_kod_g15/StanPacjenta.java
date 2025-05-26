@@ -9,17 +9,15 @@ public class StanPacjenta {
         Niebieski,
         Zolty,
         Czerwony;
-
-        
     }
-    
+
     public static Stan przypiszStan(List<Objawy> objawy) {
         int suma = objawy.stream().mapToInt(Objawy::ciezkoscWartosc).sum();
         if (suma >= 13) return Stan.Niebieski;
         if (suma >= 9) return Stan.Zolty;
         return Stan.Czerwony;
     }
-    
+
     public static List<Objawy> generujLosoweObjawy() {
         List<Objawy> wynik = new ArrayList<>();
         wynik.add(Objawy.losowy(Objawy.Kategoria.oczy));
