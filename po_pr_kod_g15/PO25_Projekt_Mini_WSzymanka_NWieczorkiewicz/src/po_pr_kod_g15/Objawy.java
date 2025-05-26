@@ -7,9 +7,9 @@ public class Objawy {
         oczy, werbalna, ruchowa
     }
 
-    private final Kategoria kategoria;
-    private final int ciezkosc;
-    private final String nazwa;
+    protected final Kategoria kategoria;
+    protected final int ciezkosc;
+    protected final String nazwa;
 
     public Objawy(Kategoria kategoria, int wartosc, String opis) {
         this.kategoria = kategoria;
