@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Pacjent extends Osoba {
     protected StanPacjenta stan;
-    private final List<Objawy> objawy;
+    protected final List<Objawy> objawy;
 
     /**
      * Konstruktor Pacjent tworzy nową osobę typu PACJENT z listą objawów.
