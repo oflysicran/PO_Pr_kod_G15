@@ -15,6 +15,10 @@ public class Karetka {
             przyjazd(turaId);
         }
     }
+    
+    public void dodajPacjent(Pacjent pacjent){
+        pacjenci.add(pacjent);
+    }
 
     /**
      * Generuje przyjazd karetki z 2-3 pacjentami, tworzy ich objawy i stan.
@@ -29,12 +33,14 @@ public class Karetka {
             // losowe imię i nazwisko pacjenta
             String imie = Osoba.losujImie();
             String nazwisko = Osoba.losujNazwisko();
-
+            
             Pacjent pacjent = new Pacjent(imie, nazwisko, stan, objawy);
 
-            pacjenci.add(pacjent);
+            dodajPacjent(pacjent);
         }
     }
+    
+    
 
     /**
      * Zwraca listę nowych pacjentów i czyści listę wewnętrzną.
