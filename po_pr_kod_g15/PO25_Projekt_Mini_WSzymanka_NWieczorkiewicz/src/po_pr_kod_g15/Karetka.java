@@ -3,7 +3,7 @@ package po_pr_kod_g15;
 import java.util.*;
 
 public class Karetka {
-    private final List<Pacjent> pacjenci = new ArrayList<>();
+    protected final List<Pacjent> pacjenci = new ArrayList<>();
     private final Random los = new Random();
 
     /**
